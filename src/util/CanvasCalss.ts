@@ -17,7 +17,6 @@ export class ImageCanvas {
   }
 
   setTransform() {
-    console.log(this._state.scale);
     this.ctx.setTransform(
       this._state.scale,
       0,
@@ -64,14 +63,13 @@ export class ImageCanvas {
 
     const xs = (offsetX - this._mousePos.viewPos.x) / this._state.scale;
     const ys = (offsetY - this._mousePos.viewPos.y) / this._state.scale;
-    const newScale = -deltaY > 0 ? this._state.scale * 1.2 : this._state.scale / 1.2;
 
-    if (newScale >= MIN_SCALE && newScale <= MAX_SCALE) {
-      this._state.setScale(newScale);
-      this._mousePos.setViewPos({
-        x: offsetX - xs * this._state.scale,
-        y: offsetY - ys * this._state.scale,
-      });
-    }
+    // -deltaY > 0 ? this._state.scale * 1.2 : this._state.scale / 1.2;
+    -deltaY > 0 ? this._state.setScale('zoomIn') : this._state.setScale('zoomOut');
+
+    this._mousePos.setViewPos({
+      x: offsetX - xs * this._state.scale,
+      y: offsetY - ys * this._state.scale,
+    });
   }
 }

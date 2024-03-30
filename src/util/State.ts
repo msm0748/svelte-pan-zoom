@@ -1,5 +1,11 @@
 import { get, writable } from 'svelte/store';
 
+type Zoom = 'zoomIn' | 'zoomOut';
+
+const MIN_SCALE = 0.1;
+const MAX_SCALE = 10;
+const ZOOM_SENSITIVITY = 0.1;
+
 class State {
   public _scale = writable(1);
 
@@ -7,8 +13,27 @@ class State {
     return get(this._scale);
   }
 
-  setScale(n: number) {
-    this._scale.set(n);
+  setScale(type: Zoom) {
+    switch (type) {
+      case 'zoomIn':
+        this._scale.update((scale) => {
+          if (scale < MAX_SCALE - ZOOM_SENSITIVITY) {
+            return scale + ZOOM_SENSITIVITY;
+          }
+          return scale;
+        });
+        break;
+      case 'zoomOut':
+        this._scale.update((scale) => {
+          if (scale > MIN_SCALE + ZOOM_SENSITIVITY) {
+            return scale - ZOOM_SENSITIVITY;
+          }
+          return scale;
+        });
+        break;
+      default:
+        break;
+    }
   }
 }
 
