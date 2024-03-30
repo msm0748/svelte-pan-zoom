@@ -39,7 +39,7 @@ export class ImageCanvasHandler {
     }
   }
 
-  handleMouseDown() {
+  onZoomMouseDown() {
     const { x: offsetX, y: offsetY } = this.mousePos.currentPos;
 
     this.startPos = {
@@ -48,7 +48,7 @@ export class ImageCanvasHandler {
     };
   }
 
-  handleMouseMove() {
+  onZoomMouseMove() {
     const { x: offsetX, y: offsetY } = this.mousePos.currentPos;
 
     this.mousePos.setViewPos({
@@ -57,7 +57,7 @@ export class ImageCanvasHandler {
     });
   }
 
-  handleWheel(deltaY: number) {
+  onZoomByWheel(deltaY: number) {
     const { x: offsetX, y: offsetY } = this.mousePos.currentPos;
 
     const xs = (offsetX - this.mousePos.viewPos.x) / this.state.scale;
@@ -70,4 +70,11 @@ export class ImageCanvasHandler {
       y: offsetY - ys * this.state.scale,
     });
   }
+
+  moveImageByWheel = (deltaX: number, deltaY: number) => {
+    const x = this.mousePos.viewPos.x + deltaX;
+    const y = this.mousePos.viewPos.y + deltaY;
+
+    this.mousePos.setViewPos({ x, y });
+  };
 }

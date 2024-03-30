@@ -9,7 +9,10 @@
 
   let canvasSize = INITIAL_SIZE;
   let imageCanvasHandler: ImageCanvas;
-  let panning = false;
+  // let panning = false;
+
+  let isTouch = false;
+  let isGrabbing = false;
   let isImageLoading = true;
 
   onMount(() => {
@@ -39,34 +42,40 @@
     };
   });
 
+  const resetTouchAndGrabState = () => {
+    isTouch = false;
+    isGrabbing = false;
+  };
+
   const handleMouseDown = (e: MouseEvent) => {
     e.preventDefault();
-    const { offsetX, offsetY } = e;
-    panning = true;
+    isTouch = true;
 
-    imageCanvasHandler.onZoomMouseDown();
+    // 이미지 움직이기
   };
 
   const handleMouseMove = (e: MouseEvent) => {
     e.preventDefault();
     mousePos.setCurrentPos(e);
-    if (!panning) return;
 
-    imageCanvasHandler.onZoomMouseMove();
+    if (isTouch && isGrabbing) imageCanvasHandler.onZoomMouseMove();
   };
 
   const handleMouseUp = (e: MouseEvent) => {
     e.preventDefault();
-    const { offsetX, offsetY } = e;
 
-    panning = false;
+    resetTouchAndGrabState();
   };
 
   const handleWheel = (e: WheelEvent) => {
     e.preventDefault();
     const { ctrlKey, metaKey, deltaX, deltaY } = e;
 
-    imageCanvasHandler.onZoomByWheel(deltaY);
+    if (ctrlKey || metaKey) {
+      imageCanvasHandler.onZoomByWheel(deltaY);
+    } else {
+      imageCanvasHandler.moveImageByWheel(deltaX, deltaY);
+    }
   };
 </script>
 

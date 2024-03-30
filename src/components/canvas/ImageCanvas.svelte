@@ -17,16 +17,21 @@
   });
 
   export const onZoomMouseDown = () => {
-    imageCanvasHandler.handleMouseDown();
+    imageCanvasHandler.onZoomMouseDown();
   };
 
   export const onZoomMouseMove = () => {
-    imageCanvasHandler.handleMouseMove();
+    imageCanvasHandler.onZoomMouseMove();
     imageCanvasHandler.draw();
   };
 
   export const onZoomByWheel = (deltaY: number) => {
-    imageCanvasHandler.handleWheel(deltaY);
+    imageCanvasHandler.onZoomByWheel(deltaY);
+    imageCanvasHandler.draw();
+  };
+
+  export const moveImageByWheel = (deltaX: number, deltaY: number) => {
+    imageCanvasHandler.moveImageByWheel(deltaX, deltaY);
     imageCanvasHandler.draw();
   };
 
