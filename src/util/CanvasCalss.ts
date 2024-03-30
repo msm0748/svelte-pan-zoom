@@ -1,3 +1,5 @@
+import { mousePos } from './Mouse';
+
 const INITIAL_POSITION = { x: 0, y: 0 };
 const MIN_SCALE = 0.1;
 const MAX_SCALE = 10;
@@ -5,15 +7,16 @@ const MAX_SCALE = 10;
 export class ImageCanvas {
   private ctx: CanvasRenderingContext2D;
   private scale = 1;
-  private viewPos = INITIAL_POSITION;
+
   private startPos = INITIAL_POSITION;
+  private _mousePos = mousePos;
 
   constructor(ctx: CanvasRenderingContext2D) {
     this.ctx = ctx;
   }
 
   setTransform() {
-    this.ctx.setTransform(this.scale, 0, 0, this.scale, this.viewPos.x, this.viewPos.y);
+    this.ctx.setTransform(this.scale, 0, 0, this.scale, this._mousePos.viewPos.x, this._mousePos.viewPos.y);
   }
 
   clearRect() {
@@ -29,38 +32,37 @@ export class ImageCanvas {
     this.ctx.drawImage(img, 0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
   }
 
-  handleMouseDown(e: MouseEvent) {
-    const { offsetX, offsetY } = e;
-    e.preventDefault();
+  handleMouseDown() {
+    const { x: offsetX, y: offsetY } = this._mousePos.currentPos;
+
     this.startPos = {
-      x: offsetX - this.viewPos.x,
-      y: offsetY - this.viewPos.y,
+      x: offsetX - this._mousePos.viewPos.x,
+      y: offsetY - this._mousePos.viewPos.y,
     };
   }
 
-  handleMouseMove(e: MouseEvent) {
-    const { offsetX, offsetY } = e;
-    e.preventDefault();
-    this.viewPos = {
+  handleMouseMove() {
+    const { x: offsetX, y: offsetY } = this._mousePos.currentPos;
+
+    this._mousePos.setViewPos({
       x: offsetX - this.startPos.x,
       y: offsetY - this.startPos.y,
-    };
+    });
   }
 
-  handleWheel(e: WheelEvent) {
-    const { offsetX, offsetY } = e;
-    e.preventDefault();
-    const xs = (offsetX - this.viewPos.x) / this.scale;
-    const ys = (offsetY - this.viewPos.y) / this.scale;
-    const delta = -e.deltaY;
-    const newScale = delta > 0 ? this.scale * 1.2 : this.scale / 1.2;
+  handleWheel(deltaY: number) {
+    const { x: offsetX, y: offsetY } = this._mousePos.currentPos;
+
+    const xs = (offsetX - this._mousePos.viewPos.x) / this.scale;
+    const ys = (offsetY - this._mousePos.viewPos.y) / this.scale;
+    const newScale = -deltaY > 0 ? this.scale * 1.2 : this.scale / 1.2;
 
     if (newScale >= MIN_SCALE && newScale <= MAX_SCALE) {
       this.scale = newScale;
-      this.viewPos = {
+      this._mousePos.setViewPos({
         x: offsetX - xs * this.scale,
         y: offsetY - ys * this.scale,
-      };
+      });
     }
   }
 }

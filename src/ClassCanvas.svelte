@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { ImageCanvas } from './util/CanvasCalss';
+  import { mousePos } from './util/Mouse';
 
   const img = new Image();
 
@@ -23,7 +24,7 @@
   const handleMouseDown = (e: MouseEvent) => {
     panning = true;
 
-    canvasHandler.handleMouseDown(e);
+    canvasHandler.handleMouseDown();
   };
 
   const handleMouseUp = () => {
@@ -31,13 +32,16 @@
   };
 
   const handleMouseMove = (e: MouseEvent) => {
+    mousePos.setCurrentPos(e);
+
     if (!panning) return;
-    canvasHandler.handleMouseMove(e);
+    canvasHandler.handleMouseMove();
     canvasHandler.draw(img);
   };
 
   const handleWheel = (e: WheelEvent) => {
-    canvasHandler.handleWheel(e);
+    const { deltaY } = e;
+    canvasHandler.handleWheel(deltaY);
     canvasHandler.draw(img);
   };
 </script>
