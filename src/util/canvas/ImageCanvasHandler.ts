@@ -1,6 +1,6 @@
-import { INITIAL_POSITION } from '../constants/initCanvas';
-import { mousePos } from './Mouse';
-import { state } from './State';
+import { INITIAL_POSITION } from '../../constants/initCanvas';
+import { mousePos } from '../../stories/canvas/MousePos';
+import { state } from '../../stories/canvas/State';
 
 export class ImageCanvasHandler {
   private ctx: CanvasRenderingContext2D;

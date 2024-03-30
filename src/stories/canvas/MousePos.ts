@@ -1,4 +1,4 @@
-import type { Position } from '../types/canvas';
+import type { Position } from '../../types/canvas';
 
 const INITIAL_POSITION = { x: 0, y: 0 };
 

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import type { Size } from '../../types/canvas';
-  import { ImageCanvasHandler } from '../../util/ImageCanvasHandler';
+  import { ImageCanvasHandler } from '../../util/canvas/ImageCanvasHandler';
 
   export let size: Size, isImageLoading: boolean;
 

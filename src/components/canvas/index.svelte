@@ -1,11 +1,11 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { INITIAL_SIZE } from '../../constants/initCanvas';
-  import { mousePos } from '../../util/Mouse';
+  import { mousePos } from '../../stories/canvas/MousePos';
   import ImageCanvas from './ImageCanvas.svelte';
   import testImage from '../../assets/test02.jpg';
-  import { adjustImageToCanvas } from '../../util/adjustImageToCanvas';
-  import { state } from '../../util/State';
+  import { adjustImageToCanvas } from '../../util/canvas/adjustImageToCanvas';
+  import { state } from '../../stories/canvas/State';
 
   let canvasSize = INITIAL_SIZE;
   let imageCanvasHandler: ImageCanvas;

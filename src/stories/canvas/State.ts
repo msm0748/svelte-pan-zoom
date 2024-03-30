@@ -1,6 +1,6 @@
 import { get, writable, type Writable } from 'svelte/store';
-import { MAX_SCALE, MIN_SCALE, ZOOM_SENSITIVITY } from '../constants/initCanvas';
-import type { ImageInfo, Zoom } from '../types/canvas';
+import { MAX_SCALE, MIN_SCALE, ZOOM_SENSITIVITY } from '../../constants/initCanvas';
+import type { ImageInfo, Zoom } from '../../types/canvas';
 
 class State {
   public _imageInfo: Writable<ImageInfo | null> = writable(null);
