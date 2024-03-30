@@ -1,13 +1,19 @@
-import { get, writable } from 'svelte/store';
-
-type Zoom = 'zoomIn' | 'zoomOut';
-
-const MIN_SCALE = 0.1;
-const MAX_SCALE = 10;
-const ZOOM_SENSITIVITY = 0.1;
+import { get, writable, type Writable } from 'svelte/store';
+import { MAX_SCALE, MIN_SCALE, ZOOM_SENSITIVITY } from '../constants/initCanvas';
+import type { ImageInfo, Zoom } from '../types/canvas';
 
 class State {
+  public _imageInfo: Writable<ImageInfo | null> = writable(null);
   public _scale = writable(1);
+
+  get imageInfo() {
+    if (!this._imageInfo) return;
+    return get(this._imageInfo);
+  }
+
+  setImageInfo(imageInfo: ImageInfo) {
+    this._imageInfo.set(imageInfo);
+  }
 
   get scale() {
     return get(this._scale);

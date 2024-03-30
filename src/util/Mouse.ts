@@ -1,7 +1,4 @@
-type Position = {
-  x: number;
-  y: number;
-};
+import type { Position } from '../types/canvas';
 
 const INITIAL_POSITION = { x: 0, y: 0 };
 

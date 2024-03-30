@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { ImageCanvas } from './util/CanvasCalss';
+  import { ImageCanvasHandler } from './util/ImageCanvasHandler';
   import { mousePos } from './util/Mouse';
 
   const img = new Image();
@@ -13,7 +13,7 @@
   onMount(() => {
     ctx = zoomCanvas.getContext('2d');
     if (ctx) {
-      canvasHandler = new ImageCanvas(ctx);
+      canvasHandler = new ImageCanvasHandler(ctx);
     }
 
     img.src =
