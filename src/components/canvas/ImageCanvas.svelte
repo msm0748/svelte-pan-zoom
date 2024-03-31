@@ -4,6 +4,8 @@
   import { ImageCanvasHandler } from '../../util/canvas/ImageCanvasHandler';
 
   export let size: Size, isImageLoading: boolean;
+  export let brightness: number;
+  export let contrast: number;
 
   let canvas: HTMLCanvasElement;
   let ctx: CanvasRenderingContext2D | null;
@@ -36,6 +38,13 @@
   };
 
   $: if (!isImageLoading) {
+    imageCanvasHandler.draw();
+  }
+
+  // 화면 그리기
+  $: if (ctx) {
+    // 밝기 적용
+    ctx.filter = `brightness(${brightness}%) contrast(${contrast}%)`;
     imageCanvasHandler.draw();
   }
 </script>

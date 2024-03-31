@@ -7,6 +7,9 @@
   import { adjustImageToCanvas } from '../../util/canvas/adjustImageToCanvas';
   import { state } from '../../stories/canvas/State';
 
+  export let brightness: number;
+  export let contrast: number;
+
   let canvasSize = INITIAL_SIZE;
   let imageCanvasHandler: ImageCanvas;
 
@@ -87,7 +90,7 @@
   role="button"
   aria-pressed="false"
 >
-  <ImageCanvas bind:this={imageCanvasHandler} size={canvasSize} {isImageLoading} />
+  <ImageCanvas bind:this={imageCanvasHandler} size={canvasSize} {isImageLoading} {brightness} {contrast} />
 </div>
 
 <style>

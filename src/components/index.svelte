@@ -23,7 +23,7 @@
 
 <div class="main">
   <LeftBar bind:brightness bind:contrast />
-  <Canvas />
+  <Canvas {brightness} {contrast} />
 </div>
 
 <style>
