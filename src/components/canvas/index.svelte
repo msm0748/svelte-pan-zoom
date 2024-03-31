@@ -68,9 +68,8 @@
     e.preventDefault();
     mousePos.setCurrentPos(e);
 
-    labelCanvasHandler.onLabelMouseMove();
-
     if (isTouch && isGrabbing) imageCanvasHandler.onZoomMouseMove();
+    labelCanvasHandler.onLabelMouseMove();
   };
 
   const handleMouseUp = (e: MouseEvent) => {
@@ -82,13 +81,12 @@
     e.preventDefault();
     const { ctrlKey, metaKey, deltaX, deltaY } = e;
 
-    labelCanvasHandler.onLabelMouseWheel();
-
     if (ctrlKey || metaKey) {
       imageCanvasHandler.onZoomByWheel(deltaY);
     } else {
       imageCanvasHandler.moveImageByWheel(deltaX, deltaY);
     }
+    labelCanvasHandler.onLabelMouseWheel();
   };
 
   $: {
