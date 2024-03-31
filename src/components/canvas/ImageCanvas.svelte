@@ -41,3 +41,9 @@
 </script>
 
 <canvas bind:this={canvas} width={size.width} height={size.height} />
+
+<style>
+  canvas {
+    background-color: #374151;
+  }
+</style>

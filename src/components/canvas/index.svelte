@@ -9,7 +9,6 @@
 
   let canvasSize = INITIAL_SIZE;
   let imageCanvasHandler: ImageCanvas;
-  // let panning = false;
 
   let isTouch = false;
   let isGrabbing = false;
@@ -48,7 +47,6 @@
   };
 
   const handleMouseDown = (e: MouseEvent) => {
-    e.preventDefault();
     isTouch = true;
 
     // 이미지 움직이기
@@ -62,8 +60,6 @@
   };
 
   const handleMouseUp = (e: MouseEvent) => {
-    e.preventDefault();
-
     resetTouchAndGrabState();
   };
 
