@@ -18,28 +18,23 @@
   });
 
   $: if (labelCanvasHandler) {
-    console.log(labelCanvasHandler);
-    // requestAnimationFrame(labelCanvasHandler.draw);
+    labelCanvasHandler.drawFrame();
   }
 
   export const onLabelMouseDown = () => {
     labelCanvasHandler.onLabelMouseDown();
-    labelCanvasHandler.draw();
   };
 
   export const onLabelMouseMove = () => {
     labelCanvasHandler.onLabelMouseMove();
-    labelCanvasHandler.draw();
   };
 
   export const onLabelMouseUp = () => {
     labelCanvasHandler.onLabelMouseUp();
-    labelCanvasHandler.draw();
   };
 
   export const onLabelMouseWheel = () => {
     labelCanvasHandler.onLabelMouseWheel();
-    labelCanvasHandler.draw();
   };
 </script>
 

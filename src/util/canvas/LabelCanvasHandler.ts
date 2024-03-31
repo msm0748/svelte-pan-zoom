@@ -16,6 +16,11 @@ export class LabelCanvasHandler {
     this.ctx = ctx;
   }
 
+  drawFrame() {
+    this.draw();
+    requestAnimationFrame(() => this.drawFrame());
+  }
+
   setTransform() {
     this.ctx.setTransform(this.state.scale, 0, 0, this.state.scale, this.mousePos.viewPos.x, this.mousePos.viewPos.y);
   }
@@ -144,110 +149,3 @@ export class LabelCanvasHandler {
     }
   }
 }
-
-// import { INITIAL_POSITION, INITIAL_SCALE } from '../../constants/labellingConfig';
-// import type { Action, Position } from '../../types/Labelling';
-// import type { Element } from '../../types/Polygon';
-// import { get } from 'svelte/store';
-
-// export class PolygonDrawer {
-//   private readonly ctx: CanvasRenderingContext2D;
-//   public readonly lineWidth: number = 2;
-//   public scale: number = INITIAL_SCALE;
-//   public elements: Element[] = [];
-//   public action: Action = 'none';
-//   public resizePoint: number = 1;
-//   public viewPos: Position = INITIAL_POSITION;
-
-//   constructor(ctx: CanvasRenderingContext2D) {
-//     this.ctx = ctx;
-//   }
-
-//   /**
-//    *  마지막 요소의 점과 현재 마우스 위치 사이에 선 그리기
-//    */
-//   drawLineFromLastPoint(currentMousePos: Position) {
-//     const lastElement = this.elements[this.elements.length - 1];
-//     const points = lastElement.points;
-//     if (points.length > 0 && this.action === 'drawing') {
-//       this.ctx.beginPath();
-//       this.ctx.lineWidth = this.lineWidth / this.scale;
-//       this.ctx.strokeStyle = 'lime';
-//       const point = points[points.length - 1];
-//       this.ctx.moveTo(point[0], point[1]);
-//       this.ctx.lineTo(currentMousePos.x, currentMousePos.y);
-//       this.ctx.stroke();
-//     }
-//   }
-
-//   /**
-//    * 주어진 점들을 이어 선 그리기
-//    */
-//   drawConnectingLines(points: number[][]) {
-//     this.ctx.beginPath();
-
-//     points.forEach((point, index) => {
-//       const [x, y] = point;
-
-//       if (index === 0) {
-//         this.ctx.moveTo(x, y);
-//       } else {
-//         this.ctx.lineTo(x, y);
-//       }
-
-//       this.ctx.lineWidth = this.lineWidth / this.scale;
-//       this.ctx.strokeStyle = 'lime';
-//     });
-//     this.ctx.stroke();
-//   }
-
-//   /**
-//    * 모서리 포인트 사각형을 그리기
-//    */
-//   drawPointRectangles(points: number[][]) {
-//     this.ctx.fillStyle = 'white';
-//     points.forEach((point) => {
-//       const [x, y] = point;
-
-//       this.ctx.lineWidth = 2 / this.scale;
-//       this.ctx.strokeStyle = 'black';
-
-//       this.ctx.strokeRect(x - this.resizePoint / 2, y - this.resizePoint / 2, this.resizePoint, this.resizePoint);
-//       this.ctx.fillRect(x - this.resizePoint / 2, y - this.resizePoint / 2, this.resizePoint, this.resizePoint);
-//     });
-//   }
-
-//   /**
-//    * 캔버스에서 이미지 지우기
-//    */
-//   clearRect() {
-//     this.ctx.save();
-//     this.ctx.setTransform(1, 0, 0, 1, 0, 0);
-//     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-//     this.ctx.restore();
-//   }
-
-//   /**
-//    * 캔버스에서 뷰를 조작하고 확대/축소하는 데 사용
-//    */
-//   setCanvasTransform() {
-//     this.ctx.setTransform(this.scale, 0, 0, this.scale, this.viewPos.x, this.viewPos.y);
-//   }
-
-//   /**
-//    * 화면에 그리기
-//    */
-//   draw(currentMousePos: Position) {
-//     this.clearRect();
-//     this.setCanvasTransform();
-//     if (this.elements.length > 0) {
-//       this.drawLineFromLastPoint(currentMousePos);
-
-//       this.elements.forEach((element) => {
-//         const points = element.points;
-//         this.drawConnectingLines(points);
-//         this.drawPointRectangles(points);
-//       });
-//     }
-//   }
-// }
