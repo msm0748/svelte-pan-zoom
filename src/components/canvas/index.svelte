@@ -6,6 +6,7 @@
   import testImage from '../../assets/test02.jpg';
   import { adjustImageToCanvas } from '../../util/canvas/adjustImageToCanvas';
   import { state } from '../../stories/canvas/State';
+  import LabelCanvas from './LabelCanvas.svelte';
 
   export let brightness: number;
   export let contrast: number;
@@ -14,6 +15,7 @@
 
   let canvasSize = INITIAL_SIZE;
   let imageCanvasHandler: ImageCanvas;
+  let labelCanvasHandler: LabelCanvas;
 
   let isTouch = false;
   let isGrabbing = false;
@@ -56,6 +58,7 @@
     isTouch = true;
 
     imageCanvasHandler.onZoomMouseDown();
+    labelCanvasHandler.onLabelMouseDown();
 
     // 이미지 움직이기
     if ($selectedTool === 'move') isGrabbing = true;
@@ -65,16 +68,21 @@
     e.preventDefault();
     mousePos.setCurrentPos(e);
 
+    labelCanvasHandler.onLabelMouseMove();
+
     if (isTouch && isGrabbing) imageCanvasHandler.onZoomMouseMove();
   };
 
   const handleMouseUp = (e: MouseEvent) => {
+    labelCanvasHandler.onLabelMouseUp();
     resetTouchAndGrabState();
   };
 
   const handleWheel = (e: WheelEvent) => {
     e.preventDefault();
     const { ctrlKey, metaKey, deltaX, deltaY } = e;
+
+    labelCanvasHandler.onLabelMouseWheel();
 
     if (ctrlKey || metaKey) {
       imageCanvasHandler.onZoomByWheel(deltaY);
@@ -115,6 +123,7 @@
   aria-pressed="false"
 >
   <ImageCanvas bind:this={imageCanvasHandler} size={canvasSize} {isImageLoading} {brightness} {contrast} />
+  <LabelCanvas bind:this={labelCanvasHandler} size={canvasSize} />
 </div>
 
 <style>

@@ -1,8 +1,9 @@
 import { get, writable, type Writable } from 'svelte/store';
 import { MAX_SCALE, MIN_SCALE, ZOOM_SENSITIVITY } from '../../constants/initCanvas';
-import type { ImageInfo, Tool, Zoom } from '../../types/canvas';
+import type { Element, ImageInfo, Tool, Zoom } from '../../types/canvas';
 
 class State {
+  public _elements: Writable<Element[]> = writable([]);
   public _imageInfo: Writable<ImageInfo | null> = writable(null);
   public _scale = writable(1);
   public _selectedTool: Writable<Tool> = writable('select');
@@ -14,6 +15,14 @@ class State {
 
   setImageInfo(imageInfo: ImageInfo) {
     this._imageInfo.set(imageInfo);
+  }
+
+  get elements() {
+    return get(this._elements);
+  }
+
+  setElements(elements: Element[]) {
+    this._elements.set(elements);
   }
 
   get scale() {

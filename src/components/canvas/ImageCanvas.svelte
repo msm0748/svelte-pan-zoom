@@ -54,6 +54,9 @@
 
 <style>
   canvas {
+    position: absolute;
+    left: 0;
+    top: 0;
     background-color: #374151;
   }
 </style>
