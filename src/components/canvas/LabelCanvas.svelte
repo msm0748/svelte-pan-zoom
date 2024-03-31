@@ -17,24 +17,28 @@
     }
   });
 
-  $: if (labelCanvasHandler) {
-    labelCanvasHandler.drawFrame();
-  }
+  // $: if (labelCanvasHandler) {
+  //   labelCanvasHandler.drawFrame();
+  // }
 
   export const onLabelMouseDown = () => {
     labelCanvasHandler.onLabelMouseDown();
+    labelCanvasHandler.draw();
   };
 
   export const onLabelMouseMove = () => {
     labelCanvasHandler.onLabelMouseMove();
+    labelCanvasHandler.draw();
   };
 
   export const onLabelMouseUp = () => {
     labelCanvasHandler.onLabelMouseUp();
+    labelCanvasHandler.draw();
   };
 
   export const onLabelMouseWheel = () => {
     labelCanvasHandler.onLabelMouseWheel();
+    labelCanvasHandler.draw();
   };
 </script>
 
