@@ -10,12 +10,15 @@
   export let brightness: number;
   export let contrast: number;
 
+  const { selectedTool } = state;
+
   let canvasSize = INITIAL_SIZE;
   let imageCanvasHandler: ImageCanvas;
 
   let isTouch = false;
   let isGrabbing = false;
   let isImageLoading = true;
+  let cursorStyle: string = 'default';
 
   onMount(() => {
     //이미지 정보 및 사이즈 배치
@@ -52,7 +55,10 @@
   const handleMouseDown = (e: MouseEvent) => {
     isTouch = true;
 
+    imageCanvasHandler.onZoomMouseDown();
+
     // 이미지 움직이기
+    if ($selectedTool === 'move') isGrabbing = true;
   };
 
   const handleMouseMove = (e: MouseEvent) => {
@@ -76,10 +82,28 @@
       imageCanvasHandler.moveImageByWheel(deltaX, deltaY);
     }
   };
+
+  $: {
+    switch ($selectedTool) {
+      case 'move':
+        cursorStyle = 'grab';
+        if (isGrabbing) {
+          cursorStyle = 'grabbing';
+        }
+        break;
+      case 'polygon':
+        cursorStyle = 'crosshair';
+        break;
+      default:
+        cursorStyle = 'default';
+        break;
+    }
+  }
 </script>
 
 <div
   class="container"
+  style="cursor: {cursorStyle};"
   bind:offsetWidth={canvasSize.width}
   bind:offsetHeight={canvasSize.height}
   on:mousedown={handleMouseDown}

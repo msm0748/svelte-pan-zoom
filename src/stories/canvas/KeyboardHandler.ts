@@ -4,7 +4,7 @@ import { state } from './State';
 
 class KeyboardHandler {
   public state = state;
-  public _beforeSelectedTool = INITIAL_SELECTED_TOOL;
+  private _beforeSelectedTool = INITIAL_SELECTED_TOOL;
 
   // 이전 선택된 도구를 저장하는 메서드
   savePreviousTool() {

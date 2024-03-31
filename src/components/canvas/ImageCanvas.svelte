@@ -20,6 +20,7 @@
 
   export const onZoomMouseDown = () => {
     imageCanvasHandler.onZoomMouseDown();
+    imageCanvasHandler.draw();
   };
 
   export const onZoomMouseMove = () => {
