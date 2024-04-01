@@ -90,6 +90,34 @@ export class CreateLabelHandler {
     }
   }
 
+  /**
+   * 폴리곤의 점을 추가하거나 폴리곤을 완성(닫기)하는 로직
+   */
+  addOrClosePolygonPoint() {
+    const { relativePosX, relativePosY } = this.mousePos.relativePos;
+    const point = [relativePosX, relativePosY];
+    const lastIndex = this.state.elements.length - 1;
+    const currentElements = this.state.elements[lastIndex];
+    const POINT_THRESHOLD = this.state.resizePoint;
+
+    const hasNoPoints = this.state.elements[lastIndex].points.length === 0;
+
+    const [firstPointX, firstPointY] = hasNoPoints ? point : this.state.elements[lastIndex].points[0];
+
+    const isCloseToPoint =
+      this.state.elements[lastIndex].points.length > 2 &&
+      Math.abs(relativePosX - firstPointX) < POINT_THRESHOLD &&
+      Math.abs(relativePosY - firstPointY) < POINT_THRESHOLD;
+
+    if (isCloseToPoint) {
+      const endPoint = [firstPointX, firstPointY];
+      this.state.elements[lastIndex].points = [...currentElements.points, endPoint];
+      this.state.setAction('none');
+    } else {
+      this.state.elements[lastIndex].points = [...currentElements.points, point];
+    }
+  }
+
   onLabelMouseDown() {
     this.state.setAction('drawing');
     const id = +new Date();
@@ -116,34 +144,6 @@ export class CreateLabelHandler {
 
       default:
         break;
-    }
-  }
-
-  /**
-   * 폴리곤의 점을 추가하거나 폴리곤을 완성(닫기)하는 로직
-   */
-  addOrClosePolygonPoint() {
-    const { relativePosX, relativePosY } = this.mousePos.relativePos;
-    const point = [relativePosX, relativePosY];
-    const lastIndex = this.state.elements.length - 1;
-    const currentElements = this.state.elements[lastIndex];
-    const POINT_THRESHOLD = this.state.resizePoint;
-
-    const hasNoPoints = this.state.elements[lastIndex].points.length === 0;
-
-    const [firstPointX, firstPointY] = hasNoPoints ? point : this.state.elements[lastIndex].points[0];
-
-    const isCloseToPoint =
-      this.state.elements[lastIndex].points.length > 2 &&
-      Math.abs(relativePosX - firstPointX) < POINT_THRESHOLD &&
-      Math.abs(relativePosY - firstPointY) < POINT_THRESHOLD;
-
-    if (isCloseToPoint) {
-      const endPoint = [firstPointX, firstPointY];
-      this.state.elements[lastIndex].points = [...currentElements.points, endPoint];
-      this.state.setAction('none');
-    } else {
-      this.state.elements[lastIndex].points = [...currentElements.points, point];
     }
   }
 }

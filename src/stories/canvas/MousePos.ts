@@ -4,10 +4,10 @@ import { state } from './State';
 const INITIAL_POSITION = { x: 0, y: 0 };
 
 class MousePosition {
-  public _currentPos = INITIAL_POSITION;
-  public _viewPos = INITIAL_POSITION;
-  public _relativePos = INITIAL_POSITION;
-  public state = state;
+  private _currentPos = INITIAL_POSITION;
+  private _viewPos = INITIAL_POSITION;
+  private _relativePos = INITIAL_POSITION;
+  private state = state;
 
   get currentPos() {
     return this._currentPos;

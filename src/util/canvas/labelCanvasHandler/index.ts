@@ -2,6 +2,7 @@ import { get } from 'svelte/store';
 import { mousePos } from '../../../stories/canvas/MousePos';
 import { state } from '../../../stories/canvas/State';
 import { CreateLabelHandler } from './CreateLabel';
+import { MoveLabelHandler } from './MoveLabel';
 
 export class LabelCanvasHandler {
   private ctx: CanvasRenderingContext2D;
@@ -9,10 +10,12 @@ export class LabelCanvasHandler {
   public mousePos = mousePos;
   public state = state;
   public createLabelHandler: CreateLabelHandler;
+  public moveLabelHandler: MoveLabelHandler;
 
   constructor(ctx: CanvasRenderingContext2D) {
     this.ctx = ctx;
     this.createLabelHandler = new CreateLabelHandler(ctx);
+    this.moveLabelHandler = new MoveLabelHandler();
   }
 
   drawFrame() {
@@ -46,7 +49,17 @@ export class LabelCanvasHandler {
   }
 
   onLabelMouseMove() {
+    const selectedTool = get(this.state.selectedTool);
     // const { x: offsetX, y: offsetY } = this.mousePos.currentPos;
+
+    switch (selectedTool) {
+      case 'select':
+        this.moveLabelHandler.onLabelMouseMove();
+        break;
+
+      default:
+        break;
+    }
   }
 
   onLabelMouseUp() {
@@ -65,7 +78,6 @@ export class LabelCanvasHandler {
   }
 
   onLabelMouseWheel() {
-    // this.state.resizePoint = 7 / this.state.scale + 3 / this.state.scale;
     this.state.setResizePoint();
   }
 }

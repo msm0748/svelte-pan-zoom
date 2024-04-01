@@ -38,6 +38,7 @@
     imageCanvasHandler.draw();
   };
 
+  // 이미지 첫 로딩시 화면 그리기
   $: if (!isImageLoading) {
     imageCanvasHandler.draw();
   }
