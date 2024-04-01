@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { LabelCanvasHandler } from '../../util/canvas/LabelCanvasHandler';
+  import { LabelCanvasHandler } from '../../util/canvas/labelCanvasHandler';
   import type { Size } from '../../types/canvas';
 
   export let size: Size;

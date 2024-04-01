@@ -1,9 +1,9 @@
 import { get } from 'svelte/store';
-import { mousePos } from '../../stories/canvas/MousePos';
-import { state } from '../../stories/canvas/State';
-import type { Action, Element } from '../../types/canvas';
+import { mousePos } from '../../../stories/canvas/MousePos';
+import { state } from '../../../stories/canvas/State';
+import type { Element } from '../../../types/canvas';
 
-export class LabelCanvasHandler {
+export class CreateLabelHandler {
   private ctx: CanvasRenderingContext2D;
 
   private mousePos = mousePos;
@@ -11,22 +11,6 @@ export class LabelCanvasHandler {
 
   constructor(ctx: CanvasRenderingContext2D) {
     this.ctx = ctx;
-  }
-
-  drawFrame() {
-    this.draw();
-    requestAnimationFrame(() => this.drawFrame());
-  }
-
-  setTransform() {
-    this.ctx.setTransform(this.state.scale, 0, 0, this.state.scale, this.mousePos.viewPos.x, this.mousePos.viewPos.y);
-  }
-
-  clearRect() {
-    this.ctx.save();
-    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
-    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-    this.ctx.restore();
   }
 
   /**
@@ -76,12 +60,27 @@ export class LabelCanvasHandler {
     this.ctx.stroke();
   }
 
-  draw() {
-    this.clearRect();
-    this.setTransform();
+  /**
+   *  마지막 요소의 점과 현재 마우스 위치 사이에 선 그리기
+   */
+  drawLineFromLastPoint() {
+    const { relativePosX, relativePosY } = this.mousePos.relativePos;
+    const lastElement = this.state.elements[this.state.elements.length - 1];
+    const points = lastElement.points;
+    if (points.length > 0 && this.state.action === 'drawing') {
+      this.ctx.beginPath();
+      this.ctx.lineWidth = this.state.lineWidth / this.state.scale;
+      this.ctx.strokeStyle = 'lime';
+      const point = points[points.length - 1];
+      this.ctx.moveTo(point[0], point[1]);
+      this.ctx.lineTo(relativePosX, relativePosY);
+      this.ctx.stroke();
+    }
+  }
 
+  draw() {
     if (this.state.elements.length > 0) {
-      // this.drawLineFromLastPoint(currentMousePos);
+      this.drawLineFromLastPoint();
 
       this.state.elements.forEach((element) => {
         const points = element.points;
@@ -92,9 +91,6 @@ export class LabelCanvasHandler {
   }
 
   onLabelMouseDown() {
-    const selectedTool = get(this.state.selectedTool);
-
-    if (selectedTool !== 'polygon' || this.state.action === 'drawing') return;
     this.state.setAction('drawing');
     const id = +new Date();
     const element: Element = { id, type: 'polygon', label: 'test', points: [] };
@@ -121,11 +117,6 @@ export class LabelCanvasHandler {
       default:
         break;
     }
-  }
-
-  onLabelMouseWheel() {
-    // this.state.resizePoint = 7 / this.state.scale + 3 / this.state.scale;
-    this.state.setResizePoint();
   }
 
   /**
