@@ -28,6 +28,12 @@ export class MoveLabelHandler {
 
     return inside;
   }
+
+  onLabelMouseDown() {
+    if (this.state.$action === 'moving') {
+    }
+  }
+
   onLabelMouseMove() {
     const isInside = this.isPointInsidePolygon();
     if (isInside) {

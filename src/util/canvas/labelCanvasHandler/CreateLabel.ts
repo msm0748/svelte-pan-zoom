@@ -119,6 +119,8 @@ export class CreateLabelHandler {
   }
 
   onLabelMouseDown() {
+    if (this.state.$action === 'drawing') return;
+
     this.state.setAction('drawing');
     const id = +new Date();
     const element: Element = { id, type: 'polygon', label: 'test', points: [] };
@@ -127,18 +129,7 @@ export class CreateLabelHandler {
   }
 
   onLabelMouseUp() {
-    const selectedTool = get(this.state.selectedTool);
-
-    switch (selectedTool) {
-      case 'polygon':
-        if (this.state.$action !== 'drawing') return;
-
-        this.addOrClosePolygonPoint();
-
-        break;
-
-      default:
-        break;
-    }
+    if (this.state.$action !== 'drawing') return;
+    this.addOrClosePolygonPoint();
   }
 }

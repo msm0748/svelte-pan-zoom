@@ -51,8 +51,16 @@ export class LabelCanvasHandler {
   onLabelMouseDown() {
     const selectedTool = get(this.state.selectedTool);
 
-    if (selectedTool !== 'polygon' || this.state.$action === 'drawing') return;
-    this.createLabelHandler.onLabelMouseDown();
+    switch (selectedTool) {
+      case 'select':
+        break;
+      case 'polygon':
+        this.createLabelHandler.onLabelMouseDown();
+        break;
+
+      default:
+        break;
+    }
   }
 
   onLabelMouseMove() {
@@ -74,9 +82,7 @@ export class LabelCanvasHandler {
 
     switch (selectedTool) {
       case 'polygon':
-        if (this.state.$action !== 'drawing') return;
         this.createLabelHandler.onLabelMouseUp();
-
         break;
 
       default:
