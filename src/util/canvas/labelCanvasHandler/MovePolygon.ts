@@ -2,7 +2,7 @@ import { mousePos } from '../../../stories/canvas/MousePos';
 import { state } from '../../../stories/canvas/State';
 import type { Element } from '../../../types/canvas';
 
-export class MoveLabelHandler {
+export class MovePolygonHandler {
   private mousePos = mousePos;
   private state = state;
 
@@ -38,7 +38,6 @@ export class MoveLabelHandler {
   onLabelMouseDown() {
     if (this.state.$action === 'moving') {
       const id = this.state.$elements.find((element) => this.isPointInsidePolygonId(element));
-      console.log(id, '누구냐');
     }
   }
 

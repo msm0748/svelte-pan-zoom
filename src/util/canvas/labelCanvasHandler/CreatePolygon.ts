@@ -3,7 +3,7 @@ import { mousePos } from '../../../stories/canvas/MousePos';
 import { state } from '../../../stories/canvas/State';
 import type { Element } from '../../../types/canvas';
 
-export class CreateLabelHandler {
+export class CreatePolygonHandler {
   private ctx: CanvasRenderingContext2D;
 
   private mousePos = mousePos;

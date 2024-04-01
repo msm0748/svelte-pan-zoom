@@ -1,21 +1,21 @@
 import { get } from 'svelte/store';
 import { mousePos } from '../../../stories/canvas/MousePos';
 import { state } from '../../../stories/canvas/State';
-import { CreateLabelHandler } from './CreateLabel';
-import { MoveLabelHandler } from './MoveLabel';
+import { CreatePolygonHandler } from './CreatePolygon';
+import { MovePolygonHandler } from './MovePolygon';
 
 export class LabelCanvasHandler {
   private ctx: CanvasRenderingContext2D;
 
   public mousePos = mousePos;
   public state = state;
-  public createLabelHandler: CreateLabelHandler;
-  public moveLabelHandler: MoveLabelHandler;
+  public createPolygonHandler: CreatePolygonHandler;
+  public movePolygonHandler: MovePolygonHandler;
 
   constructor(ctx: CanvasRenderingContext2D) {
     this.ctx = ctx;
-    this.createLabelHandler = new CreateLabelHandler(ctx);
-    this.moveLabelHandler = new MoveLabelHandler();
+    this.createPolygonHandler = new CreatePolygonHandler(ctx);
+    this.movePolygonHandler = new MovePolygonHandler();
   }
 
   drawFrame() {
@@ -45,7 +45,7 @@ export class LabelCanvasHandler {
     this.clearRect();
     this.setTransform();
 
-    this.createLabelHandler.draw();
+    this.createPolygonHandler.draw();
   }
 
   onLabelMouseDown() {
@@ -53,10 +53,10 @@ export class LabelCanvasHandler {
 
     switch (selectedTool) {
       case 'select':
-        this.moveLabelHandler.onLabelMouseDown();
+        this.movePolygonHandler.onLabelMouseDown();
         break;
       case 'polygon':
-        this.createLabelHandler.onLabelMouseDown();
+        this.createPolygonHandler.onLabelMouseDown();
         break;
 
       default:
@@ -70,7 +70,7 @@ export class LabelCanvasHandler {
 
     switch (selectedTool) {
       case 'select':
-        this.moveLabelHandler.onLabelMouseMove();
+        this.movePolygonHandler.onLabelMouseMove();
         break;
 
       default:
@@ -83,7 +83,7 @@ export class LabelCanvasHandler {
 
     switch (selectedTool) {
       case 'polygon':
-        this.createLabelHandler.onLabelMouseUp();
+        this.createPolygonHandler.onLabelMouseUp();
         break;
 
       default:
