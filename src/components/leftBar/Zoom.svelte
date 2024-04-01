@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { mousePos } from '../../stories/canvas/MousePos';
   import { state } from '../../stories/canvas/State';
 
   const zoomIn = () => {
@@ -10,6 +11,7 @@
   };
 
   const reset = () => {
+    mousePos.resetViewPos();
     state.setScale('reset');
   };
 </script>

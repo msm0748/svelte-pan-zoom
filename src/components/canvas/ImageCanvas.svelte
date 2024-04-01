@@ -3,6 +3,7 @@
   import type { Size } from '../../types/canvas';
   import { ImageCanvasHandler } from '../../util/canvas/ImageCanvasHandler';
   import { state } from '../../stories/canvas/State';
+  import { mousePos } from '../../stories/canvas/MousePos';
 
   export let size: Size, isImageLoading: boolean;
   export let brightness: number;
@@ -57,8 +58,13 @@
       imageCanvasHandler.draw();
     });
 
+    const unsubscribeViewPos = mousePos.viewPos.subscribe((e) => {
+      imageCanvasHandler.draw();
+    });
+
     return () => {
       unsubscribeScale();
+      unsubscribeViewPos();
     };
   });
 </script>

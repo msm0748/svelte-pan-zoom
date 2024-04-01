@@ -3,6 +3,7 @@
   import { LabelCanvasHandler } from '../../util/canvas/labelCanvasHandler';
   import type { Size } from '../../types/canvas';
   import { state } from '../../stories/canvas/State';
+  import { mousePos } from '../../stories/canvas/MousePos';
 
   export let size: Size;
 
@@ -48,8 +49,13 @@
       labelCanvasHandler.draw();
     });
 
+    const unsubscribeViewPos = mousePos.viewPos.subscribe((e) => {
+      labelCanvasHandler.draw();
+    });
+
     return () => {
       unsubscribeScale();
+      unsubscribeViewPos();
     };
   });
 </script>

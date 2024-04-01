@@ -14,7 +14,14 @@ export class ImageCanvasHandler {
   }
 
   setTransform() {
-    this.ctx.setTransform(this.state.$scale, 0, 0, this.state.$scale, this.mousePos.viewPos.x, this.mousePos.viewPos.y);
+    this.ctx.setTransform(
+      this.state.$scale,
+      0,
+      0,
+      this.state.$scale,
+      this.mousePos.$viewPos.x,
+      this.mousePos.$viewPos.y
+    );
   }
 
   clearRect() {
@@ -43,8 +50,8 @@ export class ImageCanvasHandler {
     const { x: offsetX, y: offsetY } = this.mousePos.currentPos;
 
     this.startPos = {
-      x: offsetX - this.mousePos.viewPos.x,
-      y: offsetY - this.mousePos.viewPos.y,
+      x: offsetX - this.mousePos.$viewPos.x,
+      y: offsetY - this.mousePos.$viewPos.y,
     };
   }
 
@@ -60,8 +67,8 @@ export class ImageCanvasHandler {
   onZoomByWheel(deltaY: number) {
     const { x: offsetX, y: offsetY } = this.mousePos.currentPos;
 
-    const xs = (offsetX - this.mousePos.viewPos.x) / this.state.$scale;
-    const ys = (offsetY - this.mousePos.viewPos.y) / this.state.$scale;
+    const xs = (offsetX - this.mousePos.$viewPos.x) / this.state.$scale;
+    const ys = (offsetY - this.mousePos.$viewPos.y) / this.state.$scale;
 
     -deltaY > 0 ? this.state.setScale('zoomIn') : this.state.setScale('zoomOut');
 
@@ -72,8 +79,8 @@ export class ImageCanvasHandler {
   }
 
   moveImageByWheel = (deltaX: number, deltaY: number) => {
-    const x = this.mousePos.viewPos.x + deltaX;
-    const y = this.mousePos.viewPos.y + deltaY;
+    const x = this.mousePos.$viewPos.x + deltaX;
+    const y = this.mousePos.$viewPos.y + deltaY;
 
     this.mousePos.setViewPos({ x, y });
   };
