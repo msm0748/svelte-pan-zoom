@@ -56,6 +56,10 @@ class State {
     return get(this._scale);
   }
 
+  get scale() {
+    return this._scale;
+  }
+
   setScale(type: Zoom) {
     switch (type) {
       case 'zoomIn':
@@ -73,6 +77,10 @@ class State {
           }
           return scale;
         });
+        break;
+
+      case 'reset':
+        this._scale.set(1);
         break;
       default:
         break;

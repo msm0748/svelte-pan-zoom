@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { LabelCanvasHandler } from '../../util/canvas/labelCanvasHandler';
   import type { Size } from '../../types/canvas';
+  import { state } from '../../stories/canvas/State';
 
   export let size: Size;
 
@@ -40,6 +41,17 @@
     labelCanvasHandler.onLabelMouseWheel();
     labelCanvasHandler.draw();
   };
+
+  // scale이 변경될 때마다 draw 함수를 실행하는 로직
+  onMount(() => {
+    const unsubscribeScale = state.scale.subscribe(() => {
+      labelCanvasHandler.draw();
+    });
+
+    return () => {
+      unsubscribeScale();
+    };
+  });
 </script>
 
 <canvas bind:this={canvas} width={size.width} height={size.height} />

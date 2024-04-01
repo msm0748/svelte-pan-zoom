@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import type { Size } from '../../types/canvas';
   import { ImageCanvasHandler } from '../../util/canvas/ImageCanvasHandler';
+  import { state } from '../../stories/canvas/State';
 
   export let size: Size, isImageLoading: boolean;
   export let brightness: number;
@@ -49,6 +50,17 @@
     ctx.filter = `brightness(${brightness}%) contrast(${contrast}%)`;
     imageCanvasHandler.draw();
   }
+
+  // scale이 변경될 때마다 draw 함수를 실행하는 로직
+  onMount(() => {
+    const unsubscribeScale = state.scale.subscribe(() => {
+      imageCanvasHandler.draw();
+    });
+
+    return () => {
+      unsubscribeScale();
+    };
+  });
 </script>
 
 <canvas bind:this={canvas} width={size.width} height={size.height} />

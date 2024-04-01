@@ -1,16 +1,16 @@
-<!-- <script lang="ts">
-  import { scale } from '../../../store/canvasStore';
+<script lang="ts">
+  import { state } from '../../stories/canvas/State';
 
   const zoomIn = () => {
-    scale.updateZoom('zoomIn');
+    state.setScale('zoomIn');
   };
 
   const zoomOut = () => {
-    scale.updateZoom('zoomOut');
+    state.setScale('zoomOut');
   };
 
   const reset = () => {
-    scale.updateZoom('reset');
+    state.setScale('reset');
   };
 </script>
 
@@ -18,4 +18,4 @@
   <button on:click={zoomIn}>확대</button>
   <button on:click={zoomOut}>축소</button>
   <button on:click={reset}>리셋</button>
-</div> -->
+</div>
