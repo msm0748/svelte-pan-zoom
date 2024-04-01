@@ -1,12 +1,31 @@
 import { get, writable, type Writable } from 'svelte/store';
 import { MAX_SCALE, MIN_SCALE, ZOOM_SENSITIVITY } from '../../constants/initCanvas';
-import type { Element, ImageInfo, Tool, Zoom } from '../../types/canvas';
+import type { Action, Element, ImageInfo, Tool, Zoom } from '../../types/canvas';
 
 class State {
   public _elements: Writable<Element[]> = writable([]);
   public _imageInfo: Writable<ImageInfo | null> = writable(null);
   public _scale = writable(1);
   public _selectedTool: Writable<Tool> = writable('select');
+  public _action: Writable<Action> = writable('none');
+  private _resizePoint: number = 7 / this.scale + 3 / this.scale;
+
+  get resizePoint() {
+    return this._resizePoint;
+  }
+
+  setResizePoint() {
+    console.log(this.scale);
+    this._resizePoint = 7 / this.scale + 3 / this.scale;
+  }
+
+  get action() {
+    return get(this._action);
+  }
+
+  setAction(action: Action) {
+    this._action.set(action);
+  }
 
   get imageInfo() {
     if (!this._imageInfo) return;

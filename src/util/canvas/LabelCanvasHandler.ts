@@ -9,8 +9,6 @@ export class LabelCanvasHandler {
   private mousePos = mousePos;
   private state = state;
   private readonly lineWidth = 2;
-  private _action: Action = 'none';
-  private _resizePoint: number = 7 / this.state.scale + 3 / this.state.scale;
 
   constructor(ctx: CanvasRenderingContext2D) {
     this.ctx = ctx;
@@ -43,8 +41,18 @@ export class LabelCanvasHandler {
       this.ctx.lineWidth = 2 / this.state.scale;
       this.ctx.strokeStyle = 'black';
 
-      this.ctx.strokeRect(x - this._resizePoint / 2, y - this._resizePoint / 2, this._resizePoint, this._resizePoint);
-      this.ctx.fillRect(x - this._resizePoint / 2, y - this._resizePoint / 2, this._resizePoint, this._resizePoint);
+      this.ctx.strokeRect(
+        x - this.state.resizePoint / 2,
+        y - this.state.resizePoint / 2,
+        this.state.resizePoint,
+        this.state.resizePoint
+      );
+      this.ctx.fillRect(
+        x - this.state.resizePoint / 2,
+        y - this.state.resizePoint / 2,
+        this.state.resizePoint,
+        this.state.resizePoint
+      );
     });
   }
 
@@ -87,8 +95,8 @@ export class LabelCanvasHandler {
   onLabelMouseDown() {
     const selectedTool = get(this.state.selectedTool);
 
-    if (selectedTool !== 'polygon' || this._action === 'drawing') return;
-    this._action = 'drawing';
+    if (selectedTool !== 'polygon' || this.state.action === 'drawing') return;
+    this.state.setAction('drawing');
     const id = +new Date();
     const element: Element = { id, type: 'polygon', label: 'test', points: [] };
 
@@ -104,7 +112,7 @@ export class LabelCanvasHandler {
 
     switch (selectedTool) {
       case 'polygon':
-        if (this._action !== 'drawing') return;
+        if (this.state.action !== 'drawing') return;
 
         // handlePolygon(relativePosX, relativePosY);
         this.addOrClosePolygonPoint();
@@ -117,7 +125,8 @@ export class LabelCanvasHandler {
   }
 
   onLabelMouseWheel() {
-    this._resizePoint = 7 / this.state.scale + 3 / this.state.scale;
+    // this.state.resizePoint = 7 / this.state.scale + 3 / this.state.scale;
+    this.state.setResizePoint();
   }
 
   /**
@@ -128,7 +137,7 @@ export class LabelCanvasHandler {
     const point = [relativePosX, relativePosY];
     const lastIndex = this.state.elements.length - 1;
     const currentElements = this.state.elements[lastIndex];
-    const POINT_THRESHOLD = this._resizePoint;
+    const POINT_THRESHOLD = this.state.resizePoint;
 
     const hasNoPoints = this.state.elements[lastIndex].points.length === 0;
 
@@ -141,9 +150,8 @@ export class LabelCanvasHandler {
 
     if (isCloseToPoint) {
       const endPoint = [firstPointX, firstPointY];
-      // 변수 변경이 되는지 확인해보기
       this.state.elements[lastIndex].points = [...currentElements.points, endPoint];
-      this._action = 'none';
+      this.state.setAction('none');
     } else {
       this.state.elements[lastIndex].points = [...currentElements.points, point];
     }
