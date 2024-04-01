@@ -27,10 +27,12 @@ class MousePosition {
   }
 
   get relativePos() {
-    const relativePosX = (this._currentPos.x - this._viewPos.x) / this.state.scale;
-    const relativePosY = (this._currentPos.y - this._viewPos.y) / this.state.scale;
+    const relativePosX = (this._currentPos.x - this._viewPos.x) / this.state.$scale;
+    const relativePosY = (this._currentPos.y - this._viewPos.y) / this.state.$scale;
 
-    return { relativePosX, relativePosY };
+    this._relativePos = { x: relativePosX, y: relativePosY };
+
+    return this._relativePos;
   }
 }
 

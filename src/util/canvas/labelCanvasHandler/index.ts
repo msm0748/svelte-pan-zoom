@@ -24,7 +24,7 @@ export class LabelCanvasHandler {
   }
 
   setTransform() {
-    this.ctx.setTransform(this.state.scale, 0, 0, this.state.scale, this.mousePos.viewPos.x, this.mousePos.viewPos.y);
+    this.ctx.setTransform(this.state.$scale, 0, 0, this.state.$scale, this.mousePos.viewPos.x, this.mousePos.viewPos.y);
   }
 
   clearRect() {
@@ -44,7 +44,7 @@ export class LabelCanvasHandler {
   onLabelMouseDown() {
     const selectedTool = get(this.state.selectedTool);
 
-    if (selectedTool !== 'polygon' || this.state.action === 'drawing') return;
+    if (selectedTool !== 'polygon' || this.state.$action === 'drawing') return;
     this.createLabelHandler.onLabelMouseDown();
   }
 
@@ -67,7 +67,7 @@ export class LabelCanvasHandler {
 
     switch (selectedTool) {
       case 'polygon':
-        if (this.state.action !== 'drawing') return;
+        if (this.state.$action !== 'drawing') return;
         this.createLabelHandler.onLabelMouseUp();
 
         break;

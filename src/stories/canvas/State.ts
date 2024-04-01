@@ -3,12 +3,12 @@ import { MAX_SCALE, MIN_SCALE, ZOOM_SENSITIVITY } from '../../constants/initCanv
 import type { Action, Element, ImageInfo, Tool, Zoom } from '../../types/canvas';
 
 class State {
-  public _elements: Writable<Element[]> = writable([]);
-  public _imageInfo: Writable<ImageInfo | null> = writable(null);
-  public _scale = writable(1);
-  public _selectedTool: Writable<Tool> = writable('select');
-  public _action: Writable<Action> = writable('none');
-  private _resizePoint: number = 7 / this.scale + 3 / this.scale;
+  private _elements: Writable<Element[]> = writable([]);
+  private _imageInfo: Writable<ImageInfo | null> = writable(null);
+  private _scale = writable(1);
+  private _selectedTool: Writable<Tool> = writable('select');
+  private _action: Writable<Action> = writable('none');
+  private _resizePoint: number = 7 / this.$scale + 3 / this.$scale;
   private readonly _lineWidth = 2;
 
   get lineWidth() {
@@ -20,18 +20,22 @@ class State {
   }
 
   setResizePoint() {
-    this._resizePoint = 7 / this.scale + 3 / this.scale;
+    this._resizePoint = 7 / this.$scale + 3 / this.$scale;
+  }
+
+  get $action() {
+    return get(this._action);
   }
 
   get action() {
-    return get(this._action);
+    return this._action;
   }
 
   setAction(action: Action) {
     this._action.set(action);
   }
 
-  get imageInfo() {
+  get $imageInfo() {
     if (!this._imageInfo) return;
     return get(this._imageInfo);
   }
@@ -40,7 +44,7 @@ class State {
     this._imageInfo.set(imageInfo);
   }
 
-  get elements() {
+  get $elements() {
     return get(this._elements);
   }
 
@@ -48,7 +52,7 @@ class State {
     this._elements.set(elements);
   }
 
-  get scale() {
+  get $scale() {
     return get(this._scale);
   }
 

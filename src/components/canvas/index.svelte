@@ -11,7 +11,7 @@
   export let brightness: number;
   export let contrast: number;
 
-  const { selectedTool } = state;
+  const { selectedTool, action } = state;
 
   let canvasSize = INITIAL_SIZE;
   let imageCanvasHandler: ImageCanvas;
@@ -20,7 +20,9 @@
   let isTouch = false;
   let isGrabbing = false;
   let isImageLoading = true;
-  let cursorStyle: string = 'default';
+
+  type CursorStyle = 'default' | 'grab' | 'grabbing' | 'move' | 'crosshair';
+  let cursorStyle: CursorStyle = 'default';
 
   onMount(() => {
     //이미지 정보 및 사이즈 배치
@@ -89,8 +91,16 @@
     labelCanvasHandler.onLabelMouseWheel();
   };
 
+  // 마우스 커서 스타일
   $: {
     switch ($selectedTool) {
+      case 'select':
+        if ($action === 'moving') {
+          cursorStyle = 'move';
+        } else {
+          cursorStyle = 'default';
+        }
+        break;
       case 'move':
         cursorStyle = 'grab';
         if (isGrabbing) {

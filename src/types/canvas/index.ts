@@ -41,5 +41,5 @@ export interface SubmitElement extends Element {
 export interface SmartPolygon {
   id: number;
   type: 'polygon';
-  points: Point;
+  points: number[][];
 }
