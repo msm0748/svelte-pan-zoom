@@ -9,13 +9,17 @@ class State {
   public _selectedTool: Writable<Tool> = writable('select');
   public _action: Writable<Action> = writable('none');
   private _resizePoint: number = 7 / this.scale + 3 / this.scale;
+  private readonly _lineWidth = 2;
+
+  get lineWidth() {
+    return this._lineWidth;
+  }
 
   get resizePoint() {
     return this._resizePoint;
   }
 
   setResizePoint() {
-    console.log(this.scale);
     this._resizePoint = 7 / this.scale + 3 / this.scale;
   }
 

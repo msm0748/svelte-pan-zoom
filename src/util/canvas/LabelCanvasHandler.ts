@@ -8,7 +8,6 @@ export class LabelCanvasHandler {
 
   private mousePos = mousePos;
   private state = state;
-  private readonly lineWidth = 2;
 
   constructor(ctx: CanvasRenderingContext2D) {
     this.ctx = ctx;
@@ -71,7 +70,7 @@ export class LabelCanvasHandler {
         this.ctx.lineTo(x, y);
       }
 
-      this.ctx.lineWidth = this.lineWidth / this.state.scale;
+      this.ctx.lineWidth = this.state.lineWidth / this.state.scale;
       this.ctx.strokeStyle = 'lime';
     });
     this.ctx.stroke();
