@@ -1,45 +1,49 @@
 import { mousePos } from '../../../stories/canvas/MousePos';
 import { state } from '../../../stories/canvas/State';
+import type { Element } from '../../../types/canvas';
 
 export class MoveLabelHandler {
   private mousePos = mousePos;
   private state = state;
 
-  /**
-   * Ray Casting Algorithm
-   */
-  isPointInsidePolygon() {
+  isPointInsidePolygonId(element: Element) {
     const { x, y } = this.mousePos.relativePos;
     let inside = false;
 
-    this.state.$elements.forEach((element) => {
-      for (let i = 0, j = element.points.length - 1; i < element.points.length; j = i++) {
-        const xi = element.points[i][0];
-        const yi = element.points[i][1];
-        const xj = element.points[j][0];
-        const yj = element.points[j][1];
+    for (let i = 0, j = element.points.length - 1; i < element.points.length; j = i++) {
+      const xi = element.points[i][0];
+      const yi = element.points[i][1];
+      const xj = element.points[j][0];
+      const yj = element.points[j][1];
 
-        const intersect = yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi;
-        if (intersect) {
-          inside = !inside;
-        }
+      const intersect = yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi;
+      if (intersect) {
+        inside = !inside;
+      }
+    }
+    return inside;
+  }
+
+  isPointInsidePolygon() {
+    let inside = false;
+
+    this.state.$elements.forEach((element) => {
+      if (this.isPointInsidePolygonId(element)) {
+        inside = true;
       }
     });
-
     return inside;
   }
 
   onLabelMouseDown() {
     if (this.state.$action === 'moving') {
+      const id = this.state.$elements.find((element) => this.isPointInsidePolygonId(element));
+      console.log(id, '누구냐');
     }
   }
 
   onLabelMouseMove() {
     const isInside = this.isPointInsidePolygon();
-    if (isInside) {
-      this.state.setAction('moving');
-    } else {
-      this.state.setAction('none');
-    }
+    this.state.setAction(isInside ? 'moving' : 'none');
   }
 }

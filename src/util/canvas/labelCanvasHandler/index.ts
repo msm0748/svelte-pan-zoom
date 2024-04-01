@@ -53,6 +53,7 @@ export class LabelCanvasHandler {
 
     switch (selectedTool) {
       case 'select':
+        this.moveLabelHandler.onLabelMouseDown();
         break;
       case 'polygon':
         this.createLabelHandler.onLabelMouseDown();
